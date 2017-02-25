@@ -1,0 +1,51 @@
+sun:
+    mass:   0.0802
+    radius: 0.117
+    
+b:
+    period:       1.51087081
+    radius:       1.086
+    mass:         0.85
+    semi-major:   11.11
+    eccentricity: 0.081
+    
+c:
+    period:       2.4218233
+    radius:       1.056
+    mass:         1.38
+    semi-major:   15.21
+    eccentricity: 0.083
+    
+d:
+    period:       4.049610
+    radius:       0.772
+    mass:         0.41
+    semi-major:   21.44
+    eccentricity: 0.070
+    
+e:
+    period:       6.099615
+    radius:       0.918
+    mass:         0.62
+    semi-major:   28.17
+    eccentricity: 0.085
+f:
+    period:       9.206690
+    radius:       1.045
+    mass:         0.68
+    semi-major:   37.1
+    eccentricity: 0.063
+ 
+g:
+    period:       12.35294
+    radius:       1.127
+    mass:         1.34
+    semi-major:   45.1
+    eccentricity: 0.061
+    
+h:
+    period:       20
+    radius:       0.755
+    mass:         NA
+    semi-major:   63
+    eccentricity: NA
