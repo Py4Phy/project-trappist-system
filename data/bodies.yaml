@@ -1,7 +1,24 @@
+# +==================+
+# | star information |
+# +==================+
+# | radius: R_s      |
+# | mass: M_s        |
+# +==================+
+
 sun:
     mass:   0.0802
     radius: 0.117
-    
+
+# +======================+
+# | planet information   | 
+# +======================+
+# | period: days         |
+# | radius: R_earth      |
+# | mass: M_earth        |
+# | semi-major: 10^-3 AU |
+# | eccentricity: --     |
+# +======================+
+
 b:
     period:       1.51087081
     radius:       1.086
