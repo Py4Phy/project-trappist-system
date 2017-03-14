@@ -322,6 +322,59 @@ is 0, corresponding to the center of mass of the system at rest. This
 is most easily accomplished by setting $\vec{v}_{\text{star}}$ so that
 $\vec{P}=0$.
 
+\subsection{Analysis of accuracy}
+\label{sec:accuracy}
+
+We want to assess the accuracy of the orbital simulations. You should
+perform at least the following two tests (see also the Objectives in
+\ref{sec:tasks}).
+
+\subsubsection{Orbital period}
+\label{sec:period}
+
+Test that the simulation reproduces the observed orbital periods (see
+values in Table 1 in \citep{Gillon:2017aa}).
+
+\subsubsection{Energy conservation}
+\label{sec:energy}
+
+Newton's equations of motion for time- and velocity-independent
+potentials conserve the total energy. Test that the total energy of
+the system
+\begin{gather}
+  \label{eq:energy}
+  E = T + U
+\end{gather}
+is conserved, $dE/dt = 0$. $T$ is the kinetic energy and $U$ is the
+potential energy of the system
+\begin{align}
+  \label{eq:KE}
+  T &= \frac{1}{2} \sum_{i=1}^{N} m_{i} \vec{v}_{i}^{2}\\
+  \label{eq:PE}
+  U &= \frac{1}{2}\sum_{i=1}^{N}\sum_{\substack{j=1\\j \neq i}}^{N} U_{ij}.
+\end{align}
+
+Plot the base-10 logarithm of relative error in the total energy 
+\begin{gather}
+  \label{eq:energyaccuracy}
+  \epsilon(t) = \log_{10} \frac{E(t) - E(t=0)}{E(t=0)} 
+\end{gather}
+to estimate the accuracy of your integration scheme.\footnote{See
+  \texttt{integrators2.py} from class \emph{12 ODEs} for code that you
+  can adapt for this purpose.}
+
+\subsubsection{BONUS: Momentum conservation}
+\label{sec:momentum}
+
+\BONUS If you are also simulating the system with the central star
+moving freely you know that the center of mass of the total system is
+initially at rest and thus the total momentum $\vec{P}=0$. No external
+forces are at work so the total momentum cannot change,
+$d\vec{P}/dt = 0$ and hence the total momentum ought to be zero for
+\emph{all} time steps. Test that in your simulation the total momentum
+fulfills $\vec{P} = 0$ for all time steps.
+
+
 \subsection{Analysis of ``nearby'' planets}
 \label{sec:nearby}
 
@@ -438,16 +491,26 @@ requirements in Section \ref{sec:problem} into account:
   \begin{enumi}
   \item Generate initial conditions for the six planets b to g.
   \item Plot the orbits for all six planets for a maximum time period
-    of 1.5 d in the $x$-$y$ plane.\footnote{Check that your results
-      are consistent with the known periods $P$!} Add a marker for the
-    central star to your plot.
+    of 1.5 d in the $x$-$y$ plane. Add a marker for the central star
+    to your plot. Confirm that your result is consistent with the
+    known period $P_{b}$ for planet TRAPPIST-1b (see also Section
+    \ref{sec:period}).
   \item Plot the orbits for all six planets for a maximum time period
     of 1000 d in the $x$-$y$ plane. Add a marker for the central
-    star. \emph{Use the trajectories from this run for further
-      analysis.}
+    star.\footnote{\BONUS analyse the time series of the angular
+      motions of the planets to show that their computed periods
+      $P_{i}$ match the experimentally observed ones (see Section
+      \protect\ref{sec:period}).} \emph{Use the trajectories from this
+      run for further analysis.}
+  \item Determine the accuracy of your integration algorithm by
+    plotting as a function of time (1) the total energy $E(t)$
+    together with kinetic energy $T$ and potential energy $U$
+    (Eqn.~\ref{eq:energy}--\ref{eq:PE}) and (2) the logarithm of the
+    relative error in the energy $\epsilon(t)$
+    (Eq.~\ref{eq:energyaccuracy}).
   \end{enumi}
   Describe and justify your algorithm and your choices of parameters (e.g., your
-  time step). Briefly describe and discuss your figures.
+  time step). Describe and discuss your figures.
 \item \BONUS Treat the central star not as fixed but as another body
   in the simulation. 
   \begin{enumi}
@@ -499,6 +562,7 @@ requirements in Section \ref{sec:problem} into account:
 Changes and updates to this document.
 \begin{description}
 \item[2017-03-13] initial version
+\item[2017-03-13] updated: accuracy analysis added
 \end{description}
 
 \bibliographystyle{physbiol-natbib}      % basic style, author-year citations
