@@ -521,9 +521,16 @@ requirements in Section \ref{sec:problem} into account:
   \item Analyze the ``wobble'' of the star (motion due to gravity of
     the planets). Assume an observer looks side on the system along
     the $y$-direction. Compute a time series of the $y$-component of
-    the velocity of the star. Compare the changes to the resolution
-    of current Doppler spectrometers (about 1 m/s). Would the wobble
-    be detectable?
+    the velocity of the star $\vec{v}_{*}$ in the observer's frame of
+    reference (transform from center-of-mass frame to lab frame of
+    reference):
+    \begin{gather}
+      \label{eq:vstarlabframe}
+      \vec{v}_{*} - \frac{\sum_{i=1}^{N_{\text{planets}}}
+        m_{i}}{M_{\text{star}} + \sum_{i=1}^{N_{\text{planets}}} m_{i}}\vec{v}
+    \end{gather}
+    Compare the changes to the resolution of current Doppler
+    spectrometers (about 1 m/s). Would the wobble be detectable?
   \end{enumi}
 \item Using the positions of all planets $\vec{r}_{i}(t)$ for $0 \leq
   t \leq 1000\,\text{d}$, find the planets where an observer is most
@@ -564,7 +571,9 @@ Changes and updates to this document.
 \begin{description}
 \item[2017-03-13] initial version
 \item[2017-03-13] updated: accuracy analysis added
-\item[2017-03-16] fixed $G$ (Eq.~\ref{eq:G}); \texttt{parameters.G\_local} was correct
+\item[2017-03-16] fixed $G$ (Eq.~\ref{eq:G}) but note
+  \texttt{parameters.G\_local} was correct; corrected wobble velocity
+  (new Eq.~\ref{eq:vstarlabframe}) in bonus problem
 \end{description}
 
 \bibliographystyle{physbiol-natbib}      % basic style, author-year citations
