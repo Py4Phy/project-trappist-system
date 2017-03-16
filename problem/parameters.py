@@ -54,7 +54,8 @@ star_radius_localunits = star['radius_solar'] * solar_system['sun']['radius'] / 
                          (astronomical_unit * 1e-3)
 
 
-# in AU (solar system) units
+# in AU (solar system) units:
+# GM = 4pi^2 AU^3/year^2
 #G = 4*np.pi**2
 
 # Gravitational constant in TRAPPIST-1 local units
