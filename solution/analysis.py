@@ -11,8 +11,10 @@ import matplotlib.pyplot as plt
 
 import parameters
 from parameters import (M_star_in_solar_mass,  # mass of TRAPPIST-1 in solar masses
-                  star_radius_localunits, # in 10^-3 au
-                  )
+                        star_radius_localunits, # in 10^-3 au
+)
+
+
 
 def km2au(x):
     """Convert length x from km to au"""
@@ -45,7 +47,8 @@ def plot_orbits_fancy(r, ax=None, scale=5, star_radius=star_radius_localunits,
     N_planets = r.shape[1]
 
     if radii is None:
-        radii = scale * system_AU['radius']*1e3
+        radii = scale * km2au(parameters.planets['radius'] * \
+                parameters.solar_system['earth']['radius']) * 1e3
     assert len(radii) == N_planets
 
     if ax is None:
@@ -81,7 +84,8 @@ def plot_orbits2(r, ax=None):
 
 def plot_orbits_fancy2(r, ax=None, scale=5, radii=None):
     if radii is None:
-        radii = scale * system_AU['radius']*1e3
+        radii = scale * km2au(parameters.planets['radius'] * \
+                parameters.solar_system['earth']['radius']) * 1e3
     if ax is None:
         ax = plt.subplot(111)
     ax.set_aspect(1)
@@ -95,7 +99,7 @@ def plot_orbits_fancy2(r, ax=None, scale=5, radii=None):
                                      alpha=0.9, zorder=1))
         else: # planet
             idx = planet - 1
-            radius = radii.iloc[planet]
+            radius = radii[planet]
             planet_circle = plt.Circle([rx[-1], ry[-1]], radius, color='gray',
                                        alpha=0.8, zorder=2)
             ax.add_artist(planet_circle)
@@ -108,11 +112,16 @@ def kinetic_energy(v, m):
     # v.shape == (N_timesteps, N_planets, 2)
     return 0.5*m*np.sum(v**2, axis=-1)
 
-def energy_conservation(t, r, v, U, **kwargs):
-    """Energy drift (Tuckerman Eq 3.14.1)"""
+def calculate_energies(t, r, v, U, **kwargs):
+    """Calculate kinetic energy and potential energy time series for trajectory r"""
     m = kwargs.get('m', 1)
     KE = np.sum(kinetic_energy(v, m), axis=-1)
-    PE = np.sum(U(r, **kwargs), axis=-1)
+    PE = np.array([U(rt, **kwargs) for rt in r])
+    return KE, PE
+
+def energy_conservation(t, r, v, U, **kwargs):
+    """Energy drift (Tuckerman Eq 3.14.1)"""
+    KE, PE = calculate_energies(t, r, v, U, **kwargs)
     E = KE + PE
 
     machine_precision = 1e-15
@@ -138,9 +147,7 @@ def energy_precision(energy, machine_precision=1e-15):
     return np.log10(DeltaE)
 
 def analyze_energies(t, r, v, U, step=1, **kwargs):
-    m = kwargs.get('m', 1)
-    KE = np.sum(kinetic_energy(v, m=m), axis=-1)
-    PE = np.sum(U(r, **kwargs), axis=-1)
+    KE, PE = calculate_energies(t, r, v, U, **kwargs)
     energy = KE + PE
 
     times = t[::step]

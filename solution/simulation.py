@@ -4,6 +4,7 @@
 
 
 import numpy as np
+from scipy.spatial.distance import cdist
 
 import parameters
 from parameters import (M_star_in_solar_mass,  # mass of TRAPPIST-1 in solar masses
@@ -29,6 +30,35 @@ def F_gravity(r, m, M=1.0):
 def U_gravity(r, m, M=1.0):
     return -G_grav*m*M/np.sqrt(np.sum(r*r, axis=-1))
 
+def U_tot(r, m=None):
+    """Total interaction energy.
+
+    Arguments
+    ---------
+    r : array, shape N x 2
+    m: array, shape N
+
+    Returns
+    -------
+    U : float
+    """
+    if m is None:
+        raise ValueError("must provide appropriate m array")
+
+    # calculate all distances and sum: need 1/2 to correct double counting
+    # but it is easier to compute everything than to split the matrix... lazy
+    # (could probably build the mask as an upper triangle).
+
+    # all distances r_ij (including r_ii = 0 on the diagonal)
+    dr = cdist(r, r)
+    # we only look at off-diagonal interactions
+    offdiagonal = np.logical_not(np.diag(np.ones(dr.shape[0])).astype(np.bool))
+    # all combinations m_i m_j, ordered in the same way as the r_ij
+    mM = np.outer(m, m)  # m * M
+    # compute total energy as 1/2 * sum_{i,j, i!=j} (-G mi*mj/rij)
+    return -0.5 * G_grav * np.sum(mM[offdiagonal]/dr[offdiagonal])
+
+
 def kinetic_energy(v, m):
     """Kinetic energy 1/2 m v**2"""
     # v = [[v(0)x, v(0)y], [...], ...]
@@ -39,6 +69,10 @@ def orbits(r0, v0, masses, M_star=1.0, dt=0.001, t_max=1):
     """2D planetary motion with velocity verlet for multiple planets.
 
     Central star with mass M_star is assumed to be fixed.
+
+    Output trajectory will have star inserted as first object
+    (position 0 and velocity 0).
+
     """
 
     N_bodies = len(masses)
@@ -48,8 +82,14 @@ def orbits(r0, v0, masses, M_star=1.0, dt=0.001, t_max=1):
 
     nsteps = int(t_max/dt)
 
-    r = np.zeros((nsteps, N_bodies, dim))
-    v = np.zeros_like(r)
+    r_system = np.zeros((nsteps, N_bodies+1, dim))
+    v_system = np.zeros_like(r_system)
+
+    # views of the arrays (so that we do not have to deal with
+    # the star at index 0); changes to r and v change r_system
+    # and v_system (because they are array views due to the slicing)
+    r = r_system[:, 1:, :]
+    v = v_system[:, 1:, :]
 
     r[0, :, :] = r0
     v[0, :, :] = v0
@@ -64,7 +104,7 @@ def orbits(r0, v0, masses, M_star=1.0, dt=0.001, t_max=1):
         # new force becomes old force
         Ft = Ftdt
     t = dt * np.arange(nsteps)
-    return t, r, v
+    return t, r_system, v_system
 
 def forces(r, masses, M):
     F = np.zeros_like(r)
@@ -82,7 +122,8 @@ def forces(r, masses, M):
     return F
 
 
-
+# Having a second set of functions for the star being mobile is just
+# lazy... should be unified properly.
 
 def orbits2(r0, v0, masses, M_star=1.0, dt=0.001, t_max=1):
     """2D planetary motion with velocity verlet for multiple planets and star."""
