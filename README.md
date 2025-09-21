@@ -1,7 +1,7 @@
 # TRAPPIST-1 system (Project 2 for the 2017 class (including solution))
 
 ![Planet Hop from TRAPPIST-1e. Voted best "Hab Zone" vacation within 12 parsecs of Earth](images/2159_TRAPPIST-1e_1200_preview.jpg)
-(From [NASA Exoplanet Exploration: Galleries: TRAPPIST-1](https://exoplanets.nasa.gov/resources/2159/?linkId=34784370).)
+(From [NASA Exoplanet Exploration: Galleries: TRAPPIST-1](https://exoplanets.nasa.gov/resources/2159/?linkId=34784370); you can also take NASA's [Guided Tour to TRAPPIST-1e](https://exoplanets.nasa.gov/alien-worlds/exoplanet-travel-bureau/trappist-1e-guided-tour/).)
 
 Recently it was discovered that multiple planets orbit the ultracool dwarf star TRAPPIST-1 about 40 light years from earth. All of these planets are of a size comparable to earth and three orbit in the habitable zone of their star and are therefore possible candidates for worlds with liquid water and possibly life. Their very tight orbits bring the planets into close vicinity.
 
